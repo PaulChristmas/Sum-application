@@ -13,6 +13,15 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>base-application</name>
     <description>Demo project for Spring Boot</description>
+    
+     <repositories>
+      <repository>
+        <id>in-project</id>
+        <name>In Project Repo</name>
+        <url>file:${file.separator}${project.basedir}${file.separator}libs</url>
+      </repository>
+    </repositories>
+    
 
     <properties>
         <java.version>1.8</java.version>
@@ -30,11 +39,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>com.mathworks</groupId>
-        	<artifactId>javabuilder</artifactId>
-        	<systemPath>C:\Program Files\MATLAB\MATLAB Runtime\v96\toolbox\javabuilder\jar\javabuilder.jar</systemPath>
-        	<version>96</version>
-        	<scope>system</scope>
+        	<groupId>org.json</groupId>
+        	<artifactId>json</artifactId>
+        	<version>20180813</version>
         </dependency>
     </dependencies>
 
@@ -44,6 +51,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-jar-plugin</artifactId>
+    				<configuration>
+        				<archive>
+            				<manifest>
+                				<addClasspath>true</addClasspath>
+                				<mainClass>ru.gazis.baseapplication.BaseApplication</mainClass>
+            				</manifest>
+        				</archive>
+    				</configuration>
+			</plugin>
         </plugins>
     </build>
 

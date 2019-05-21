@@ -10,26 +10,18 @@ public class LoopOut implements Runnable {
     private static final AtomicBoolean closed = new AtomicBoolean(false);
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private Queue<String> queue = null;
-    private Computation comp = null;
 
-    public LoopOut(Queue queue, Computation comp) {
+    public LoopOut(Queue queue) {
         this.queue = queue;
-        this.comp = comp;
     }
 
-    @Override
+	@Override
 	public void run() {
 		try {
 			String str = "";
 			while (!closed.get()) {
 				if ((str = queue.poll()) != null) {
-					try {
-						String ab[] = str.split("\\+");
-						Double result = comp.getSum(Double.parseDouble(ab[0]), Double.parseDouble(ab[1]));
-						System.out.println(str + " = " + result);
-					} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-						System.err.println(str + " : Input doesn't contain '+' or number has wrong format");
-					}
+					System.out.println(str);
 				}
 			}
 		} catch (Exception e) {
@@ -39,6 +31,5 @@ public class LoopOut implements Runnable {
 
     public void shutdown() {
         closed.set(true);
-        comp.dispose();
     }
 }

@@ -1,12 +1,12 @@
 package ru.gazis.baseapplication.worker;
 
-import org.omg.PortableServer.ServantRetentionPolicyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 public class AsyncInitializer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private ExecutorService executorService;
-    private Queue<String> queue = null;
+    private Queue<String> output = null;
+    private Queue<String> input = null;
+    
     private LoopIn loopIn;
     private LoopOut loopOut;
-    private Computation comp = null;
+    private Executor executor;
 
     @PostConstruct
     public void initPostConstruct() {
@@ -29,6 +31,7 @@ public class AsyncInitializer {
             @Override
             public void run() {
                 loopIn.shutdown();
+                executor.shutdown();
                 loopOut.shutdown();
                 executorService.shutdown();
                 try {
@@ -46,19 +49,17 @@ public class AsyncInitializer {
     @Async
     public void asyncInitializer() {
         logger.info("{} constructor", this.getClass());
-        executorService = Executors.newFixedThreadPool(2);
-
-        queue = new ConcurrentLinkedQueue<String>();
+        executorService = Executors.newFixedThreadPool(3);
         
-        loopIn = new LoopIn(queue);
+        input = new ConcurrentLinkedQueue<String>();
+        output = new ConcurrentLinkedQueue<String>();
         
-        System.out.println("Initialization of computation module ... ");
-        comp = new Computation();
-        System.out.println("Done. Enter a + b: ");
-        
-        loopOut = new LoopOut(queue, comp);
+        loopIn = new LoopIn(input);
+        executor = new Executor(input, output);
+        loopOut = new LoopOut(output);
 
         executorService.submit(loopIn);
+        executorService.submit(executor);
         executorService.submit(loopOut);
     }
 }

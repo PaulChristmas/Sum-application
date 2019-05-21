@@ -1,11 +1,13 @@
 package ru.gazis.baseapplication.worker;
 
 import com.mathworks.toolbox.javabuilder.MWArray;
+import com.mathworks.toolbox.javabuilder.MWCharArray;
 import com.mathworks.toolbox.javabuilder.MWClassID;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 
 import getsum.*;
+// import CalcMPCLib.*;
 
 public class Computation {
 
@@ -44,4 +46,27 @@ public class Computation {
 		}
 
 	}
+	/*
+	public void execMod(String in, String out) throws Exception {
+		MWCharArray a = null;
+		MWCharArray b = null;
+		Object result[] = null;
+
+		try {
+			a = new MWCharArray(in);
+			b = new MWCharArray(out);
+			result = mod.CalcMPCLib(a, b);
+
+			System.err.println(result.toString());
+
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			MWArray.disposeArray(a);
+			MWArray.disposeArray(b);
+			MWArray.disposeArray(result);
+		}
+
+	}
+	*/
 }

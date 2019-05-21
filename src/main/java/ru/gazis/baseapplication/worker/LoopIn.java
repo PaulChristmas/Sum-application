@@ -25,7 +25,7 @@ public class LoopIn implements Runnable {
         while (!closed.get()) {
             try {
                 if (!(str = scanner.next().trim()).equals("")) {
-                    queue.add(str.replaceAll(" +", " "));
+                    queue.add(str);
                 }
             } catch (InputMismatchException e) {
                 e.printStackTrace();
